@@ -5,7 +5,8 @@ import { Event } from "@/types/event.type";
 
 export async function getEvents() {
   try {
-    return await prisma.event.findMany() ?? null
+    const events = await prisma.event.findMany()
+    return events
   } catch (error) {
     console.error('Error fetching events:', error);
     throw error;
@@ -14,7 +15,8 @@ export async function getEvents() {
 
 export async function getEventById(id: string) {
     try {
-      return await prisma.event.findUnique({ where: { id } }) ?? null;
+      const event = await prisma.event.findUnique({ where: { id } }) 
+      return event
     } catch (error) {
       console.error('Error fetching event:', error);
       throw error;

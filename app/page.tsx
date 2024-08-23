@@ -12,7 +12,7 @@ export default function Home() {
   //   setUrl(url)
   // };
   return (
-    <main className="flex min-h-screen flex-row items-center justify-center gap-10">
+    <main className="flex min-h-screen flex-row p-6 justify-center gap-10">
       
       {/* <div>
       <h1>Image Upload</h1>
