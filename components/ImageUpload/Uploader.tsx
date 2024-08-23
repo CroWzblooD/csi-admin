@@ -17,8 +17,9 @@ export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({ onUploadSucc
   const [files, setFiles] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
-  const preset = process.env.PRESET
-  const cloudName = process.env.CLOUD_NAME
+  const preset =   process.env.NEXT_PUBLIC_PRESET
+  const cloudName = process.env.NEXT_PUBLIC_CLOUD_NAME
+
   const MAX_FILE_SIZE = isSingleUpload ? SINGLE_MAX_FILE_SIZE : MULTI_MAX_FILE_SIZE;
 
   const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
