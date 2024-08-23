@@ -10,7 +10,7 @@ interface CloudinaryUploadProps {
 }
 
 const MULTI_MAX_FILE_SIZE = 12 * 1024 * 1024; // 12MB for multiple uploads
-const SINGLE_MAX_FILE_SIZE = 0.5 * 1024 * 1024; // 5MB for single upload
+const SINGLE_MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB for single upload
 const MAX_FILES = 12;
 
 export const CloudinaryUpload: React.FC<CloudinaryUploadProps> = ({ onUploadSuccess, isSingleUpload = false }) => {
