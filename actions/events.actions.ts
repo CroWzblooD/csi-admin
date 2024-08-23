@@ -1,6 +1,6 @@
 "use server";
 import prisma from "@/lib/prisma";
-
+import { revalidatePath } from "next/cache";
 import { Event } from "@/types/event.type";
 
 export async function getEvents() {
@@ -26,6 +26,7 @@ export async function getEventById(id: string) {
 export async function createEvent(data: Omit<Event, 'id'>) {
     try {
       const createdEvent = await prisma.event.create({ data });
+      revalidatePath('/')
       return createdEvent;
     } catch (error) {
       console.error('Error creating event:', error);

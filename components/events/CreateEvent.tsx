@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { useRouter } from "next/navigation";
 import {
   Popover,
   PopoverContent,
@@ -82,7 +83,7 @@ export function CreateEvent() {
       isPrivate: false,
     },
   });
-
+const router = useRouter()
   async function onSubmit(values: FormValues) {
     try {
       await createEvent(values);
@@ -90,6 +91,7 @@ export function CreateEvent() {
         title: "Success",
         description: `Event ${values.name} created successfully. See you on ${values.eventDate} 🚀.`,
       });
+    router.push('/')
     } catch (err) {
       toast({
         title: "Error",
