@@ -1,22 +1,70 @@
+"use client";
+
 import React from 'react';
 import { format } from 'date-fns';
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users, Edit, Trash2 } from 'lucide-react';
 import { eventModel } from '@/types/event.type';
-
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { deleteEvent } from '@/actions/events.actions';
+import { useToast } from "@/components/ui/use-toast";
 
-export default function EventCard ({ event }:{
-    event:eventModel
-})  {
+interface EventCardProps {
+  event: eventModel;
+  onDelete?: (id: string) => void;
+}
+
+export default function EventCard({ event, onDelete }: EventCardProps) {
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this event?')) {
+      try {
+        const deleted = await deleteEvent(event.id);
+        if (deleted) {
+          toast({
+            title: "Success",
+            description: `Event "${event.name}" has been deleted.`,
+          });
+          if (onDelete) {
+            onDelete(event.id);
+          } else {
+          
+            router.refresh();
+          }
+        } else {
+          toast({
+            title: "Info",
+            description: "The event no longer exists or has already been deleted.",
+          });
+          if (onDelete) {
+            onDelete(event.id);
+          } else {
+       
+            router.refresh();
+          }
+        }
+      } catch (error) {
+        console.error('Error deleting event:', error);
+        toast({
+          title: "Error",
+          description: "Failed to delete event. Please try again.",
+          variant: "destructive",
+        });
+      }
+    }
+  };
+
   return (
     <Card className="w-full max-w-sm mx-auto flex flex-col justify-between overflow-hidden transition-shadow hover:shadow-lg dark:bg-gray-800">
       <CardHeader className="p-0">
-        <img 
-          src={event.banner} 
-          alt={event.name} 
+        <img
+          src={event.banner}
+          alt={event.name}
           className="w-full h-48 object-cover"
         />
       </CardHeader>
@@ -25,7 +73,7 @@ export default function EventCard ({ event }:{
         <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">{event.description}</p>
         
         <div className="flex flex-wrap gap-2 mb-4">
-          <Badge className={event.isPaid ?'bg-red-500':'bg-green-500'}>
+          <Badge className={event.isPaid ? 'bg-red-500' : 'bg-green-500'}>
             {event.isPaid ? "Paid" : "Free"}
           </Badge>
           <Badge variant={event.isOnline ? "default" : "outline"}>
@@ -37,7 +85,7 @@ export default function EventCard ({ event }:{
         <div className="space-y-2">
           <div className="flex items-center text-sm">
             <Calendar className="w-4 h-4 mr-2" />
-            <span>{format(event.eventDate, 'MMMM d, yyyy')}</span>
+            <span>{format(new Date(event.eventDate), 'MMMM d, yyyy')}</span>
           </div>
           <div className="flex items-center text-sm">
             <Clock className="w-4 h-4 mr-2" />
@@ -55,12 +103,28 @@ export default function EventCard ({ event }:{
           )}
         </div>
       </CardContent>
-      <CardFooter className="p-4  bg-gray-50 dark:bg-gray-700">
+      <CardFooter className="p-4 bg-gray-50 dark:bg-gray-700 flex justify-between">
       <Link href={event.id}>
-      <Button className="w-full">View Details</Button>
-      </Link>
-        
+          <Button className="flex-1 mr-2">View Details</Button>
+        </Link>
+        <Link href={`/edit-event/${event.id}`}>
+          <Button
+            variant="outline"
+            className="flex-1 mx-2"
+          >
+            <Edit className="w-4 h-4 mr-2" />
+            Edit Event
+          </Button>
+        </Link>
+        <Button
+          variant="destructive"
+          className="flex-1 ml-2 mr-10"
+          onClick={handleDelete}
+        >
+          <Trash2 className="w-4 h-4 " />
+          Delete
+        </Button>
       </CardFooter>
     </Card>
   );
-};
+}
