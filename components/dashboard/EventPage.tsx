@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import EventCard from '@/components/EditEvent/EditEventForm';
+import EventCard from '@/components/dashboard/EventCard';
 import { getEvents } from '@/actions/events.actions';
 import { eventModel } from '@/types/event.type';
 
