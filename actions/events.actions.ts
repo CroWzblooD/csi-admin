@@ -34,12 +34,26 @@ export async function createEvent(data: Omit<Event, 'id'>) {
     }
   }
 
-  export async function updateEvent(id: string, data: Partial<Omit<Event, 'id'>>) {
+  export async function updateEvent(id: string, data: any) {
     try {
       const updatedEvent = await prisma.event.update({
         where: { id },
-        data,
+        data: {
+          name: data.name,
+          description: data.description,
+          venue: data.venue,
+          isPaid: data.isPaid,
+          isOnline: data.isOnline,
+          guest: data.guest,
+          eventDate: data.eventDate,
+          eventTime: data.eventTime,
+          banner: data.banner,
+          imageUrls: data.imageUrls,
+          isPrivate: data.isPrivate,
+        },
       });
+
+      revalidatePath('/');
       return updatedEvent;
     } catch (error) {
       console.error('Error updating event:', error);
