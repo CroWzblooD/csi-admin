@@ -8,12 +8,13 @@ import { eventModel } from '@/types/event.type';
 export default function EventsPage() {
   const [events, setEvents] = useState<eventModel[]>([]);
 
+  const refreshEvents = async () => {
+    const fetchedEvents = await getEvents();
+    setEvents(fetchedEvents);
+  };
+
   useEffect(() => {
-    async function fetchEvents() {
-      const fetchedEvents = await getEvents();
-      setEvents(fetchedEvents);
-    }
-    fetchEvents();
+    refreshEvents();
   }, []);
 
   const handleDelete = (deletedId: string) => {
