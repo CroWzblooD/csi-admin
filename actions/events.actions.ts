@@ -34,7 +34,7 @@ export async function createEvent(data: Omit<Event, 'id'>) {
     }
   }
 
-export async function updateEvent(id: string, data: Partial<Omit<Event, 'id'>>) {
+  export async function updateEvent(id: string, data: Partial<Omit<Event, 'id'>>) {
     try {
       const updatedEvent = await prisma.event.update({
         where: { id },
@@ -47,12 +47,17 @@ export async function updateEvent(id: string, data: Partial<Omit<Event, 'id'>>) 
     }
   }
   
-export async function deleteEvent(id:string){
-    try{
-        await prisma.event.delete({where:{id}})
-        return true
-    }catch(err){
-        console.error('Error deleting event:',err)
-        throw err
+  export async function deleteEvent(id: string): Promise<boolean> {
+    try {
+      const event = await prisma.event.findUnique({ where: { id } });
+      if (!event) {
+        return false; 
+      }
+      await prisma.event.delete({ where: { id } });
+      revalidatePath('/');
+      return true;
+    } catch (err) {
+      console.error('Error deleting event:', err);
+      return false; 
     }
   }
