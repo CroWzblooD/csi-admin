@@ -115,6 +115,9 @@ export function EditEventForm({ event }: EditEventFormProps) {
 
   async function onSubmit(values: FormValues) {
     try {
+      if (!event) {
+        throw new Error("No event found to update");
+      }
       const updatedEvent = await updateEvent(event.id, values);
       toast({
         title: "Success",
