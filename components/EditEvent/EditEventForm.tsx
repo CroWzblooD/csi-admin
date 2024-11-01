@@ -114,25 +114,25 @@ export function EditEventForm({ event }: EditEventFormProps) {
   }, [event, form]);
 
   async function onSubmit(values: FormValues) {
-    try {
-      if (!event) {
-        throw new Error("No event found to update");
-      }
-      const updatedEvent = await updateEvent(event.id, values);
-      toast({
-        title: "Success",
-        description: `Event ${updatedEvent.name} updated successfully.`,
-      });
-      router.push('/');
-    } catch (error) {
-      console.error('Error updating event:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update event. Please try again.",
-        variant: "destructive",
-      });
+  try {
+    if (!event) {
+      throw new Error("No event found to update");
     }
+    const updatedEvent = await updateEvent(event.id, values);
+    toast({
+      title: "Success",
+      description: `Event ${updatedEvent.name} updated successfully.`,
+    });
+    router.push('/');
+  } catch (error) {
+    console.error('Error updating event:', error);
+    toast({
+      title: "Error",
+      description: "Failed to update event. Please try again.",
+      variant: "destructive",
+    });
   }
+}
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
