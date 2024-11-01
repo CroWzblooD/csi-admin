@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CloudinaryUpload } from "../ImageUpload/Uploader";
@@ -113,17 +113,27 @@ export function EditEventForm({ event }: EditEventFormProps) {
     }
   }, [event, form]);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   async function onSubmit(values: FormValues) {
+    setIsSubmitting(true);
     try {
       if (!event) {
         throw new Error("No event found to update");
       }
+      
       const updatedEvent = await updateEvent(event.id, values);
+      
       toast({
         title: "Success",
         description: `Event ${updatedEvent.name} updated successfully.`,
       });
-      router.refresh();
+
+      await Promise.all([
+        router.refresh(),
+        new Promise(resolve => setTimeout(resolve, 500))
+      ]);
+
       router.push('/');
     } catch (error) {
       console.error('Error updating event:', error);
@@ -132,6 +142,8 @@ export function EditEventForm({ event }: EditEventFormProps) {
         description: "Failed to update event. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   }
   return (
@@ -360,7 +372,9 @@ export function EditEventForm({ event }: EditEventFormProps) {
               )}
             />
 
-            <Button type="submit">Update Event</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Updating..." : "Update Event"}
+            </Button>
           </form>
         </Form>
       </CardContent>
