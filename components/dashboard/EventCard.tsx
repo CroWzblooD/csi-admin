@@ -103,14 +103,14 @@ export default function EventCard({ event, onDelete }: EventCardProps) {
           )}
         </div>
       </CardContent>
-      <CardFooter className="p-4 bg-gray-50 dark:bg-gray-700 flex justify-between">
-      <Link href={event.id}>
-          <Button className="flex-1 mr-2">View Details</Button>
+      <CardFooter className="p-4 bg-gray-50 dark:bg-gray-700 flex flex-col sm:flex-row gap-2">
+        <Link href={event.id} className="w-full sm:w-auto">
+          <Button className="w-full">View Details</Button>
         </Link>
-        <Link href={`/edit-event/${event.id}`}>
+        <Link href={`/edit-event/${event.id}`} className="w-full sm:w-auto">
           <Button
             variant="outline"
-            className="flex-1 mx-2"
+            className="w-full"
           >
             <Edit className="w-4 h-4 mr-2" />
             Edit Event
@@ -118,10 +118,10 @@ export default function EventCard({ event, onDelete }: EventCardProps) {
         </Link>
         <Button
           variant="destructive"
-          className="flex-1 ml-2 mr-10"
+          className="w-full sm:w-auto"
           onClick={handleDelete}
         >
-          <Trash2 className="w-4 h-4 " />
+          <Trash2 className="w-4 h-4 mr-2" />
           Delete
         </Button>
       </CardFooter>
