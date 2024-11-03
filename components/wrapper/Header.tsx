@@ -33,16 +33,7 @@ const Header: React.FC = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start" className="w-[200px]">
             <DropdownMenuItem>
-              <Link href="/">Home</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <a href="#">Products</a>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <a href="#">About</a>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <a href="#">Contact</a>
+              <Link href="/createEvent" className="w-full">Create Events</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
