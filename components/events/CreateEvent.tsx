@@ -40,9 +40,7 @@ const formSchema = z.object({
   eventDate: z.date(),
   eventTime: z.string(),
   banner: z.string().url("Must be a valid URL"),
-  imageUrls: z
-    .array(z.string().url("Must be a valid URL"))
-    .min(1, "At least one image URL is required"),
+  imageUrls: z.array(z.string().url("Must be a valid URL")).optional(), // Mark field as optional
   isPrivate: z.boolean(),
 });
 
@@ -79,7 +77,7 @@ export function CreateEvent() {
       eventDate: new Date(),
       eventTime: "12:00",
       banner: "",
-      imageUrls: [""],
+      imageUrls: [], // Default to an empty array
       isPrivate: false,
     },
   });
@@ -292,7 +290,7 @@ const router = useRouter()
               name="imageUrls"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Images</FormLabel>
+                  <FormLabel>Images (Optional)</FormLabel>
                   <FormControl>
                     <CloudinaryUpload
                       onUploadSuccess={(urls) => field.onChange(urls)}
