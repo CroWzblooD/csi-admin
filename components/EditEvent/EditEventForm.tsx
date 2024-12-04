@@ -43,9 +43,7 @@ const formSchema = z.object({
   eventDate: z.date(),
   eventTime: z.string(),
   banner: z.string().url("Must be a valid URL"),
-  imageUrls: z
-    .array(z.string().url("Must be a valid URL"))
-    .min(1, "At least one image URL is required"),
+  imageUrls: z.array(z.string().url("Must be a valid URL")).optional(), // Mark field as optional,
   isPrivate: z.boolean(),
 });
 
@@ -90,7 +88,7 @@ export function EditEventForm({ event }: EditEventFormProps) {
       eventDate: new Date(),
       eventTime: "12:00",
       banner: "",
-      imageUrls: [""],
+      imageUrls: [],
       isPrivate: false,
     },
   });
@@ -337,7 +335,7 @@ export function EditEventForm({ event }: EditEventFormProps) {
               name="imageUrls"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Images</FormLabel>
+                  <FormLabel>Images (Optional)</FormLabel>
                   <FormControl>
                     <CloudinaryUpload
                       onUploadSuccess={(urls) => field.onChange(urls)}
